@@ -33,31 +33,25 @@ sortListApp.controller("homeController", function ($scope, $location, listServic
 
 sortListApp.controller("sortController", function ($scope, $location, listService, comparedService, $timeout) {
 	var list = listService.getList();
+	var maxNumberOfComparisons = ((list.length)*(list.length-1))/2;
 	var comparisons = 0;
+	$scope.progressPercentage = 0;
 
 	if(list.length == 0){
     	$location.path('/home');
 	}
 
 	$scope.sortAdjective = 'higher';
-	$scope.buttonsDisabled = true;
 
 	$scope.compare = function(term1, term2, callbackIfFirst, callbackIfSecond){
-		$scope.buttonsDisabled = false;
 		$scope.term1 = term1;
 		$scope.term2 = term2;
 		$timeout(function(){
 			$scope.$apply();
 		})
 
-		angular.element('#selectFirst').unbind().click(function(){
-			$scope.buttonsDisabled = true;
-			callbackIfFirst();
-		});
-		angular.element('#selectSecond').unbind().click(function(){
-			$scope.buttonsDisabled = true;
-			callbackIfSecond();
-		});
+		angular.element('#selectFirst').unbind().click(callbackIfFirst);
+		angular.element('#selectSecond').unbind().click(callbackIfSecond);
 	}
 
 	var recursiveBubble = function(list, startIndex, endIndex, finalCallback) {
@@ -69,6 +63,8 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
 	        recursiveBubble(list, 0, endIndex - 1, finalCallback);
 	    } else {
 	    	var callbackIfFirst = function(){
+	    		comparisons++;
+	    		$scope.progressPercentage = Math.round((comparisons/maxNumberOfComparisons)*100);
 
 	    		comparedService.setCompared(list[startIndex], list[startIndex + 1]);
 
@@ -79,6 +75,8 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
 	    	}
 
 	    	var callbackIfSecond = function(){
+	    		comparisons++;
+	    		$scope.progressPercentage = Math.round((comparisons/maxNumberOfComparisons)*100);
 
 	    		comparedService.setCompared(list[startIndex + 1], list[startIndex]);
 
@@ -92,7 +90,6 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
 	    		callbackIfSecond();
 	    	} else {
 	    		$scope.compare(list[startIndex], list[startIndex+1], callbackIfFirst, callbackIfSecond);
-	    		console.log(++comparisons);
 	    	}
 
 	    }
@@ -100,6 +97,7 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
 
 	var finalCallback = function(list){
 		listService.setList(list);
+		$scope.progressPercentage = 100;
     	$location.path('/results');
 	}
 
