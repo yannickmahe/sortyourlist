@@ -46,21 +46,22 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
 	$scope.compare = function(term1, term2, callbackIfFirst, callbackIfSecond){
 		$scope.term1 = term1;
 		$scope.term2 = term2;
-		$timeout(function(){
-			$scope.$apply();
-		})
 
 		angular.element('#selectFirst').unbind().click(callbackIfFirst);
 		angular.element('#selectSecond').unbind().click(callbackIfSecond);
+		
+		$timeout(function(){
+			$scope.$apply();
+		})
 	}
 
-	var recursiveBubble = function(list, startIndex, endIndex, finalCallback) {
+	var recursiveBubble = function(list, startIndex, endIndex, compare, finalCallback) {
 	    if(startIndex > endIndex){
 	        finalCallback(list);
 	    }
 
 	    if (startIndex == endIndex - 1) {
-	        recursiveBubble(list, 0, endIndex - 1, finalCallback);
+	        recursiveBubble(list, 0, endIndex - 1, compare, finalCallback);
 	    } else {
 	    	var callbackIfFirst = function(){
 	    		comparisons++;
@@ -71,7 +72,7 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
 		        var currentValue = list[startIndex];
 		        list[startIndex] = list[startIndex + 1];
 		        list[startIndex + 1] = currentValue;
-	        	recursiveBubble(list, startIndex + 1, endIndex, finalCallback);
+	        	recursiveBubble(list, startIndex + 1, endIndex, compare, finalCallback);
 	    	}
 
 	    	var callbackIfSecond = function(){
@@ -80,7 +81,7 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
 
 	    		comparedService.setCompared(list[startIndex + 1], list[startIndex]);
 
-	        	recursiveBubble(list, startIndex + 1, endIndex, finalCallback);
+	        	recursiveBubble(list, startIndex + 1, endIndex, compare, finalCallback);
 	    	}
 
 	    	var higher = comparedService.checkCompared(list[startIndex], list[startIndex+1]);
@@ -89,7 +90,7 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
 	    	} else if (higher === false){
 	    		callbackIfSecond();
 	    	} else {
-	    		$scope.compare(list[startIndex], list[startIndex+1], callbackIfFirst, callbackIfSecond);
+	    		compare(list[startIndex], list[startIndex+1], callbackIfFirst, callbackIfSecond);
 	    	}
 
 	    }
@@ -101,7 +102,7 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
     	$location.path('/results');
 	}
 
-	recursiveBubble(list, 0, list.length, finalCallback);
+	recursiveBubble(list, 0, list.length, $scope.compare, finalCallback);
 
 });
 
