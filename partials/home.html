@@ -1,0 +1,24 @@
+<div class="row">
+    <form class="col s6">
+		<h5>1/ Enter your list contents</h5>
+        <div class="row">
+            <div class="input-field col s12">
+            	<textarea ng-model="rawText" ng-change="updateList()" id="listcontent" class="materialize-textarea"></textarea>
+          		<label for="listcontent">One element per line </label>
+            </div>
+        </div>
+    </form>
+    <div class="col s6">
+    	<h5>2/ Verify the elements</h5>
+    	<ul>
+    		<li ng-repeat="element in list  track by $index">
+			    <input type="checkbox" class="filled-in" id="filled-in-box-{{ $index }}" checked="checked" />
+			    <label for="filled-in-box-{{ $index }}">{{ element }}</label>
+    		</li>
+    	</ul>
+    </div>
+</div>
+<div class="row" style="text-align: center;">
+	<button class="btn-large waves-effect waves-light" ng-click="startSort()" type="submit" name="action">3/ Start sort
+	</button>
+</div>
