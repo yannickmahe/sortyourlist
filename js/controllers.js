@@ -40,7 +40,7 @@ sortListApp.controller("homeController", function ($scope, $location, listServic
 
 });
 
-sortListApp.controller("sortController", function ($scope, $location, listService, comparedService, $timeout) {
+sortListApp.controller("sortController", function ($scope, $location, listService, sortService, $timeout) {
 	var list = listService.getList();
 	var maxNumberOfComparisons = ((list.length)*(list.length-1))/2;
 	var comparisons = 0;
@@ -72,50 +72,13 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
 		})
 	}
 
-	var recursiveBubble = function(list, startIndex, endIndex, compare, finalCallback) {
-	    if(startIndex > endIndex){
-	        finalCallback(list);
-	    }
-
-	    if (startIndex == endIndex - 1) {
-	        recursiveBubble(list, 0, endIndex - 1, compare, finalCallback);
-	    } else {
-	    	var callbackIfFirst = function(){
-
-	    		comparedService.setCompared(list[startIndex], list[startIndex + 1]);
-
-		        var currentValue = list[startIndex];
-		        list[startIndex] = list[startIndex + 1];
-		        list[startIndex + 1] = currentValue;
-	        	recursiveBubble(list, startIndex + 1, endIndex, compare, finalCallback);
-	    	}
-
-	    	var callbackIfSecond = function(){
-
-	    		comparedService.setCompared(list[startIndex + 1], list[startIndex]);
-
-	        	recursiveBubble(list, startIndex + 1, endIndex, compare, finalCallback);
-	    	}
-
-	    	var higher = comparedService.checkCompared(list[startIndex], list[startIndex+1]);
-	    	if(higher === true){
-	    		callbackIfFirst();
-	    	} else if (higher === false){
-	    		callbackIfSecond();
-	    	} else {
-	    		compare(list[startIndex], list[startIndex+1], callbackIfFirst, callbackIfSecond);
-	    	}
-
-	    }
-	}
-
 	var finalCallback = function(list){
 		listService.setList(list);
 		$scope.progressPercentage = 100;
     	$location.path('/results');
 	}
 
-	recursiveBubble(list, 0, list.length, $scope.compare, finalCallback);
+	sortService.recursiveBubble(list, 0, list.length, $scope.compare, finalCallback);
 
 });
 
