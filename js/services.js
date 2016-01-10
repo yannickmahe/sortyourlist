@@ -53,21 +53,21 @@ sortListApp.service('comparedService', function(){
     resetComparisons();
 
     return {
-      setCompared: setCompared,
-      checkCompared: checkCompared,
-      getCompared: getCompared,
+      setCompared:      setCompared,
+      checkCompared:    checkCompared,
+      getCompared:      getCompared,
       resetComparisons: resetComparisons
     }
 });
 
 sortListApp.service('sortService', function(comparedService){
-  var recursiveBubbleSort = function(list, startIndex, endIndex, compareFunction, finalCallback) {
+  var bubbleSort = function(list, startIndex, endIndex, compareFunction, finalCallback) {
       if(startIndex > endIndex){
           finalCallback(list);
       }
 
       if (startIndex == endIndex - 1) {
-          recursiveBubbleSort(list, 0, endIndex - 1, compareFunction, finalCallback);
+          bubbleSort(list, 0, endIndex - 1, compareFunction, finalCallback);
       } else {
         var callbackIfFirst = function(){
 
@@ -76,14 +76,15 @@ sortListApp.service('sortService', function(comparedService){
             var currentValue = list[startIndex];
             list[startIndex] = list[startIndex + 1];
             list[startIndex + 1] = currentValue;
-            recursiveBubbleSort(list, startIndex + 1, endIndex, compareFunction, finalCallback);
+            bubbleSort(list, startIndex + 1, endIndex, compareFunction, finalCallback);
         }
 
         var callbackIfSecond = function(){
 
           comparedService.setCompared(list[startIndex + 1], list[startIndex]);
 
-            recursiveBubbleSort(list, startIndex + 1, endIndex, compareFunction, finalCallback);
+          bubbleSort(list, startIndex + 1, endIndex, compareFunction, finalCallback);
+
         }
 
         var higher = comparedService.checkCompared(list[startIndex], list[startIndex+1]);
@@ -99,6 +100,6 @@ sortListApp.service('sortService', function(comparedService){
   }
 
   return {
-      recursiveBubbleSort: recursiveBubbleSort
+      bubbleSort: bubbleSort
   }
 });
