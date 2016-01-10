@@ -21,18 +21,21 @@ sortListApp.service('comparedService', function(){
     var compared = [];
 
     var setCompared = function(higher, lower){
-      compared[higher + '|' + lower] = true;
-      compared[lower + '|' + higher] = false;
+      if(!(higher in compared)){
+        compared[higher] = []
+      }
+      if(!(lower in compared)){
+        compared[lower] = []
+      }
+
+      compared[higher][lower] = true;
+      compared[lower][higher] = false;
     }
 
     var checkCompared = function(element1, element2){
 
-      if(element1 + '|' + element2 in compared){
-        return compared[element1 + '|' + element2];
-      }
-
-      if(element2 + '|' + element1 in compared){
-        return compared[element2 + '|' + element1];
+      if(element1 in compared && element2 in compared[element1]){
+        return compared[element1][element2];
       }
 
       return undefined;
