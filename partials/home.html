@@ -1,6 +1,6 @@
 <div class="row">
     <form class="col s6">
-		<h5>1/ Enter your list contents</h5>
+		<h5>Enter your list contents</h5>
         <div class="row">
             <div class="input-field col s12">
             	<textarea ng-model="rawText" ng-change="updateList()" id="listcontent" class="materialize-textarea"></textarea>
@@ -9,7 +9,7 @@
         </div>
     </form>
     <div class="col s6">
-    	<h5>2/ Verify the elements</h5>
+    	<h5>Verify the elements</h5>
     	<ul>
     		<li ng-repeat="element in list  track by $index">
 			    <input type="checkbox" class="filled-in" id="filled-in-box-{{ $index }}" checked="checked" />
@@ -20,6 +20,6 @@
     </div>
 </div>
 <div class="row" style="text-align: center;">
-	<button class="btn-large waves-effect waves-light" ng-click="startSort()" type="submit" name="action">3/ Start sort
+	<button class="btn-large waves-effect waves-light" ng-click="startSort()" type="submit" name="action">Start sort
 	</button>
 </div>
