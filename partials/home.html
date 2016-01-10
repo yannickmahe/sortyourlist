@@ -12,8 +12,7 @@
     	<h5>Verify the elements</h5>
     	<ul>
     		<li ng-repeat="element in list  track by $index">
-			    <input type="checkbox" class="filled-in" id="filled-in-box-{{ $index }}" checked="checked" />
-			    <label for="filled-in-box-{{ $index }}">{{ element }}</label>
+			     <i class="tiny material-icons">label</i> {{ element }}
     		</li>
     	</ul>
         <p>{{ list.length }} elements, {{ ((list.length)*(list.length-1))/2 }} estimated comparisons</p>
