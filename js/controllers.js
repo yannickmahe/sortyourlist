@@ -1,11 +1,6 @@
 "use strict";
 
-sortListApp.controller("homeController", function ($scope, $location, listService, comparedService) {
-
-	$scope.rawText = 
-		"Everest\n"+
-		"Mont Blanc\n"+
-		"Kilimanjaro";
+sortListApp.controller("homeController", function ($scope, $location, listService, comparedService, $timeout) {
 
 	$scope.updateList = function(){
 		$scope.list = $scope.rawText.split("\n");
@@ -27,8 +22,21 @@ sortListApp.controller("homeController", function ($scope, $location, listServic
     	$location.path('/sort');
 	}
 
+	var list = listService.getList();
+	if(list.length == 0){
+		$scope.rawText = 
+			"Everest\n"+
+			"Mont Blanc\n"+
+			"Anapurna\n"+
+			"Kilimanjaro";
+	} else {
+		$scope.rawText = list.join("\n");
+	}
 	comparedService.resetComparisons();
 	$scope.updateList();
+	$timeout(function(){
+		angular.element('#listcontent').trigger('autoresize');
+	})
 
 });
 
@@ -116,6 +124,10 @@ sortListApp.controller("resultsController", function ($scope, $location, listSer
 
 	$scope.list = listService.getList().reverse();
 	if($scope.list.length == 0){
+    	$location.path('/home');
+	}
+
+	$scope.restartSort = function(){
     	$location.path('/home');
 	}
 });
