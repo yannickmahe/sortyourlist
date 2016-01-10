@@ -47,9 +47,17 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
 		$scope.term1 = term1;
 		$scope.term2 = term2;
 
-		angular.element('#selectFirst').unbind().click(callbackIfFirst);
-		angular.element('#selectSecond').unbind().click(callbackIfSecond);
-		
+		angular.element('#selectFirst').unbind().click(function(){
+    		comparisons++;
+    		$scope.progressPercentage = Math.round((comparisons/maxNumberOfComparisons)*100);
+			callbackIfFirst();
+		});
+		angular.element('#selectSecond').unbind().click(function(){
+    		comparisons++;
+    		$scope.progressPercentage = Math.round((comparisons/maxNumberOfComparisons)*100);
+			callbackIfSecond();
+		});
+
 		$timeout(function(){
 			$scope.$apply();
 		})
@@ -64,8 +72,6 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
 	        recursiveBubble(list, 0, endIndex - 1, compare, finalCallback);
 	    } else {
 	    	var callbackIfFirst = function(){
-	    		comparisons++;
-	    		$scope.progressPercentage = Math.round((comparisons/maxNumberOfComparisons)*100);
 
 	    		comparedService.setCompared(list[startIndex], list[startIndex + 1]);
 
@@ -76,8 +82,6 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
 	    	}
 
 	    	var callbackIfSecond = function(){
-	    		comparisons++;
-	    		$scope.progressPercentage = Math.round((comparisons/maxNumberOfComparisons)*100);
 
 	    		comparedService.setCompared(list[startIndex + 1], list[startIndex]);
 
