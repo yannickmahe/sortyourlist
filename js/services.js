@@ -61,13 +61,13 @@ sortListApp.service('comparedService', function(){
 });
 
 sortListApp.service('sortService', function(comparedService){
-  var recursiveBubble = function(list, startIndex, endIndex, compareFunction, finalCallback) {
+  var recursiveBubbleSort = function(list, startIndex, endIndex, compareFunction, finalCallback) {
       if(startIndex > endIndex){
           finalCallback(list);
       }
 
       if (startIndex == endIndex - 1) {
-          recursiveBubble(list, 0, endIndex - 1, compareFunction, finalCallback);
+          recursiveBubbleSort(list, 0, endIndex - 1, compareFunction, finalCallback);
       } else {
         var callbackIfFirst = function(){
 
@@ -76,14 +76,14 @@ sortListApp.service('sortService', function(comparedService){
             var currentValue = list[startIndex];
             list[startIndex] = list[startIndex + 1];
             list[startIndex + 1] = currentValue;
-            recursiveBubble(list, startIndex + 1, endIndex, compareFunction, finalCallback);
+            recursiveBubbleSort(list, startIndex + 1, endIndex, compareFunction, finalCallback);
         }
 
         var callbackIfSecond = function(){
 
           comparedService.setCompared(list[startIndex + 1], list[startIndex]);
 
-            recursiveBubble(list, startIndex + 1, endIndex, compareFunction, finalCallback);
+            recursiveBubbleSort(list, startIndex + 1, endIndex, compareFunction, finalCallback);
         }
 
         var higher = comparedService.checkCompared(list[startIndex], list[startIndex+1]);
@@ -99,6 +99,6 @@ sortListApp.service('sortService', function(comparedService){
   }
 
   return {
-      recursiveBubble: recursiveBubble
+      recursiveBubbleSort: recursiveBubbleSort
   }
 });

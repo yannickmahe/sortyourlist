@@ -78,7 +78,7 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
     	$location.path('/results');
 	}
 
-	sortService.recursiveBubble(list, 0, list.length, $scope.compare, finalCallback);
+	sortService.recursiveBubbleSort(list, 0, list.length, $scope.compare, finalCallback);
 
 });
 
