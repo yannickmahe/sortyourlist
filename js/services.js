@@ -20,6 +20,10 @@ sortListApp.service('comparedService', function(){
 
     var compared = [];
 
+    var resetComparisons = function(){
+      compared = [];
+    }
+
     var setCompared = function(higher, lower){
       if(!(higher in compared)){
         compared[higher] = []
@@ -43,6 +47,7 @@ sortListApp.service('comparedService', function(){
 
     return {
       setCompared: setCompared,
-      checkCompared: checkCompared
+      checkCompared: checkCompared,
+      resetComparisons: resetComparisons
     }
 });

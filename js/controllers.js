@@ -1,6 +1,6 @@
 "use strict";
 
-sortListApp.controller("homeController", function ($scope, $location, listService) {
+sortListApp.controller("homeController", function ($scope, $location, listService, comparedService) {
 
 	$scope.rawText = 
 		"Everest\n"+
@@ -27,6 +27,7 @@ sortListApp.controller("homeController", function ($scope, $location, listServic
     	$location.path('/sort');
 	}
 
+	comparedService.resetComparisons();
 	$scope.updateList();
 
 });
@@ -114,7 +115,7 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
 sortListApp.controller("resultsController", function ($scope, $location, listService) {
 
 	$scope.list = listService.getList().reverse();
-	if($scope.length == 0){
+	if($scope.list.length == 0){
     	$location.path('/home');
 	}
 });
