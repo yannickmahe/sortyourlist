@@ -83,12 +83,19 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
 });
 
 
-sortListApp.controller("resultsController", function ($scope, $location, listService) {
+sortListApp.controller("resultsController", function ($scope, $location, listService, comparedService, $timeout) {
 
-	$scope.list = listService.getList().reverse();
-	if($scope.list.length == 0){
+	var list = listService.getList().reverse();
+	if(list.length == 0){
     	$location.path('/home');
 	}
+
+	var detailedList = {};
+	for(var index in list){
+		var element = list[index];
+		detailedList[element] = comparedService.getCompared(element);
+	}
+	$scope.detailedList = detailedList;
 
 	$scope.restartSort = function(){
     	$location.path('/home');

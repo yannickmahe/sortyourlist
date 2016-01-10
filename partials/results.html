@@ -1,9 +1,20 @@
 <div class="row">
     <div class="col s12">
     	<h5>Sorted list</h5>
-    	<ul class="collection">
-    		<li class="collection-item" ng-repeat="element in list  track by $index">
-			    {{ $index+1 }}/ {{ element }}
+    	<ul class="collapsible popout" data-collapsible="accordion" watch>
+    		<li ng-repeat="(element, comparisons) in detailedList track by $index">
+	          <div class="collapsible-header">{{ $index+1 }}/ {{ element }}</div>
+      			<div class="collapsible-body">
+      				<p>	
+      					<strong>Performed comparisons:</strong><br>
+                <span ng-repeat="(item, isHigher) in comparisons">
+                  {{ element }} 
+                  <span ng-show="isHigher"><strong>&gt;</strong></span>
+                  <span ng-show="!isHigher"><strong>&lt;</strong></span>
+                  {{ item }}<br>
+                </span>
+      				</p>
+      			</div>
     		</li>
     	</ol>
     </div>

@@ -18,22 +18,27 @@ sortListApp.service('listService', function() {
 
 sortListApp.service('comparedService', function(){
 
-    var compared = [];
-
     var resetComparisons = function(){
-      compared = [];
+      compared = {};
     }
 
     var setCompared = function(higher, lower){
       if(!(higher in compared)){
-        compared[higher] = []
+        compared[higher] = {}
       }
       if(!(lower in compared)){
-        compared[lower] = []
+        compared[lower] = {}
       }
 
       compared[higher][lower] = true;
       compared[lower][higher] = false;
+    }
+
+    var getCompared = function(element){
+      if(element in compared){
+        return compared[element];
+      }
+      return {};
     }
 
     var checkCompared = function(element1, element2){
@@ -45,9 +50,12 @@ sortListApp.service('comparedService', function(){
       return undefined;
     }
 
+    resetComparisons();
+
     return {
       setCompared: setCompared,
       checkCompared: checkCompared,
+      getCompared: getCompared,
       resetComparisons: resetComparisons
     }
 });
