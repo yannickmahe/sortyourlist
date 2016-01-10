@@ -61,6 +61,7 @@ sortListApp.service('comparedService', function(){
 });
 
 sortListApp.service('sortService', function(comparedService){
+
   var bubbleSort = function(list, startIndex, endIndex, compareFunction, finalCallback) {
       if(startIndex > endIndex){
           finalCallback(list);
@@ -70,21 +71,16 @@ sortListApp.service('sortService', function(comparedService){
           bubbleSort(list, 0, endIndex - 1, compareFunction, finalCallback);
       } else {
         var callbackIfFirst = function(){
-
           comparedService.setCompared(list[startIndex], list[startIndex + 1]);
-
-            var currentValue = list[startIndex];
-            list[startIndex] = list[startIndex + 1];
-            list[startIndex + 1] = currentValue;
-            bubbleSort(list, startIndex + 1, endIndex, compareFunction, finalCallback);
+          var currentValue = list[startIndex];
+          list[startIndex] = list[startIndex + 1];
+          list[startIndex + 1] = currentValue;
+          bubbleSort(list, startIndex + 1, endIndex, compareFunction, finalCallback);
         }
 
         var callbackIfSecond = function(){
-
           comparedService.setCompared(list[startIndex + 1], list[startIndex]);
-
           bubbleSort(list, startIndex + 1, endIndex, compareFunction, finalCallback);
-
         }
 
         var higher = comparedService.checkCompared(list[startIndex], list[startIndex+1]);
@@ -98,6 +94,8 @@ sortListApp.service('sortService', function(comparedService){
 
       }
   }
+
+
 
   return {
       bubbleSort: bubbleSort
