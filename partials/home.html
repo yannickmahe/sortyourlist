@@ -9,13 +9,13 @@
         </div>
     </form>
     <div class="col s6">
-    	<h5>Verify the elements</h5>
+    	<h5 ng-show="list.length > 0">Verify the elements</h5>
     	<ul>
     		<li ng-repeat="element in list  track by $index">
 			     <i class="tiny material-icons">label</i> {{ element }}
     		</li>
     	</ul>
-        <p>{{ list.length }} elements, maximum {{ ((list.length)*(list.length-1))/2 }} comparisons</p>
+        <p ng-show="list.length > 0">{{ list.length }} elements, maximum {{ ((list.length)*(list.length-1))/2 }} comparisons</p>
     </div>
 </div>
 <div class="row" style="text-align: center;">
