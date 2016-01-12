@@ -83,7 +83,7 @@ sortListApp.controller("sortController", function ($scope, $location, listServic
 });
 
 
-sortListApp.controller("resultsController", function ($scope, $location, listService, comparedService, $timeout) {
+sortListApp.controller("resultsController", function ($scope, $location, listService, comparedService) {
 
 	var list = listService.getList().reverse();
 	if(list.length == 0){
@@ -99,5 +99,37 @@ sortListApp.controller("resultsController", function ($scope, $location, listSer
 
 	$scope.restartSort = function(){
     	$location.path('/home');
+	}
+
+	$scope.editComparisons = function(element){
+		var comparisonsInEdit = comparedService.getCompared(element);
+		$scope.formattedComparisons = [];
+		for(var compared in comparisonsInEdit){
+			var operatorVal;
+			if(comparisonsInEdit[compared]){
+				operatorVal = 'greater';
+			} else {
+				operatorVal = 'lower';
+			}
+			var comparison = {
+				first: element,
+				operator: operatorVal,
+				second: compared
+			}
+			$scope.formattedComparisons.push(comparison);
+		}
+	}
+
+	$scope.editAndRelaunchSort = function(){
+		for(var index in $scope.formattedComparisons){
+			var comparison = $scope.formattedComparisons[index];
+			if(comparison.operator == 'greater'){
+				comparedService.setCompared(comparison.first, comparison.second);
+			} else {
+				comparedService.setCompared(comparison.second, comparison.first);
+			}
+		}
+		angular.element('#modal').closeModal();
+		$location.path('/sort');
 	}
 });
